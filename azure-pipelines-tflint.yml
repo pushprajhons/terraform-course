@@ -24,14 +24,14 @@ stages:
         docker pull ghcr.io/terraform-linters/tflint
         # docker run --rm --volume $(System.DefaultWorkingDirectory):/data -t ghcr.io/terraform-linters/tflint-bundle:latest --module --format junit > $(System.DefaultWorkingDirectory)/TFLintReport/TFLint-Report.xml
         # docker run -v $(System.DefaultWorkingDirectory):/data -t wata727/tflint --module
-        docker run --rm --volume $(System.DefaultWorkingDirectory):/data -t ghcr.io/terraform-linters/tflint --format=junit
+        docker run --rm --volume $(System.DefaultWorkingDirectory):/data -t ghcr.io/terraform-linters/tflint --init --config=.tflint-azure.hcl --format=junit
       displayName: 'TFLint Static Code Analysis'
       name: TFLintScan
       condition: always()
     - task: CopyFiles@2
       inputs:
         SourceFolder: '$(System.DefaultWorkingDirectory)'
-        Contents: '**/*.xml'
+        Contents: '**'
         TargetFolder: '$(Build.ArtificatStagingDirectory)'
         CleanTargetFolder: true
         OverWrite: true
