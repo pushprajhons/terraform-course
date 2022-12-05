@@ -40,22 +40,23 @@ stages:
       displayName: 'Publish Artifact: TFLint Report'
       condition: succeededOrFailed()
       inputs:
-        PathtoPublish: '$(System.DefaultWorkingDirectory)/TFLintReport'
-        ArtifactName: TFLintReport
+        PathtoPublish: '$(Build.ArtificatStagingDirectory)'
+        ArtifactName: 'artifact'
+        publishLocation: 'Container'
     # Publish the results of the TFLint analysis as Test Results to the pipeline
-    - task: PublishTestResults@2
-      displayName: Publish TFLint Test Results
-      condition: succeededOrFailed()
-      inputs:
-        testResultsFormat: 'JUnit' # Options JUnit, NUnit, VSTest, xUnit, cTest
-        testResultsFiles: '**/*TFLint-Report.xml'
-        searchFolder: '$(System.DefaultWorkingDirectory)/TFLintReport'
-        mergeTestResults: false
-        testRunTitle: TFLint Scan
-        failTaskOnFailedTests: false
-        publishRunAttachments: true
+    # - task: PublishTestResults@2
+    #   displayName: Publish TFLint Test Results
+    #   condition: succeededOrFailed()
+    #   inputs:
+    #     testResultsFormat: 'JUnit' # Options JUnit, NUnit, VSTest, xUnit, cTest
+    #     testResultsFiles: '**/*TFLint-Report.xml'
+    #     searchFolder: '$(System.DefaultWorkingDirectory)/TFLintReport'
+    #     mergeTestResults: false
+    #     testRunTitle: TFLint Scan
+    #     failTaskOnFailedTests: false
+    #     publishRunAttachments: true
     # Clean up any of the containers / images that were used for quality checks
-    - bash: |
-        docker rmi "wata727/tflint" -f | true
-      displayName: 'Remove Terraform Quality Check Docker Images'
-      condition: always()
+    # - bash: |
+    #     docker rmi "wata727/tflint" -f | true
+    #   displayName: 'Remove Terraform Quality Check Docker Images'
+    #   condition: always()
