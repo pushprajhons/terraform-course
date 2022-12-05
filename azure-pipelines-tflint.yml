@@ -20,12 +20,21 @@ stages:
     # warn about deprecated syntax, unused declarations, and enforce best practices, naming conventions.
     - script: |
         mkdir TFLintReport
-        docker pull wata727/tflint
-        docker run --rm --volume $(System.DefaultWorkingDirectory):/data -t wata727/tflint --module --format junit > $(System.DefaultWorkingDirectory)/TFLintReport/TFLint-Report.xml
+        # docker pull wata727/tflint
+        docker pull ghcr.io/terraform-linters/tflint-bundle:latest
+        # docker run --rm --volume $(System.DefaultWorkingDirectory):/data -t ghcr.io/terraform-linters/tflint-bundle:latest --module --format junit > $(System.DefaultWorkingDirectory)/TFLintReport/TFLint-Report.xml
         # docker run -v $(System.DefaultWorkingDirectory):/data -t wata727/tflint --module
+        docker run --rm --volume $(System.DefaultWorkingDirectory):/data -t ghcr.io/terraform-linters/tflint-bundle:latest
       displayName: 'TFLint Static Code Analysis'
       name: TFLintScan
       condition: always()
+    - task: CopyFiles@2
+      inputs:
+        SourceFolder: '$(System.DefaultWorkingDirectory)'
+        Contents: '**'
+        TargetFolder: '$(Build.ArtificatStagingDirectory)'
+        CleanTargetFolder: true
+        OverWrite: true
     # Publish the TFLint report as an artifact to Azure Pipelines
     - task: PublishBuildArtifacts@1
       displayName: 'Publish Artifact: TFLint Report'
