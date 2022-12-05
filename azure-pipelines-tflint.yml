@@ -31,7 +31,7 @@ stages:
     - task: CopyFiles@2
       inputs:
         SourceFolder: '$(System.DefaultWorkingDirectory)'
-        Contents: '**'
+        Contents: '**/*.html'
         TargetFolder: '$(Build.ArtificatStagingDirectory)'
         CleanTargetFolder: true
         OverWrite: true
