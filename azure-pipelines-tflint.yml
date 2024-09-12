@@ -4,7 +4,7 @@
 # https://aka.ms/yaml
 
 trigger:
-- main
+- tflint-Scan
 
 pool:
   vmImage: ubuntu-latest
